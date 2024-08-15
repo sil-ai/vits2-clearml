@@ -28,19 +28,10 @@ global_step = 0
 
 def main():
     """ClearML setup"""
-    dataset = Dataset.get(
-    dataset_id="d087dddf638d4ba3a616cebe3fd02454"
-    )
-
-    path = dataset.get_mutable_local_copy(
-        target_folder="./datasets-vits2",
-        overwrite=True
-    )
-    print("Path Location: ", path)
 
     # Define the path and the link name
     link_name = 'DUMMY1'
-    target_path = path
+    target_path = "/root/.clearml/venvs-builds/3.10/task_repository/vits2-clearml.git/datasets-vits2/DemoData/LJSpeech-1.1/wavs"
 
     # Create the symbolic link
     if not os.path.islink(link_name):
