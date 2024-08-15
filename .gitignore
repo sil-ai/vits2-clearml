@@ -19,3 +19,5 @@ datasets/madasr23_base/filelists
 **/LJSpeech-1.1/*
 
 .env
+
+**/datasets-vits2/*
