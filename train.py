@@ -31,7 +31,7 @@ def main():
 
     # Define the path and the link name
     link_name = 'DUMMY1'
-    target_path = "/root/.clearml/venvs-builds/3.10/task_repository/vits2-clearml.git/datasets-vits2/wavs"
+    target_path = "./datasets-vits2/wavs"
 
     # Create the symbolic link
     if not os.path.islink(link_name):
