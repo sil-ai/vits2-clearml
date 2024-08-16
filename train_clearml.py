@@ -29,7 +29,8 @@ task.set_base_docker(
                 docker_arguments=[
                 f"--env AWS_REGION={aws_region}",
                 f"--env AWS_ACCESS_KEY_ID={aws_access_key_id}",
-                f"--env AWS_SECRET_ACCESS_KEY={aws_secret_access_key}"]
+                f"--env AWS_SECRET_ACCESS_KEY={aws_secret_access_key}",
+                "--shm-size 8g"]
             )
 
 task.execute_remotely(queue_name='jobs_urgent', exit_process=True)
