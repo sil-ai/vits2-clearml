@@ -7,7 +7,7 @@ curr_dir = os.getcwd().split('/')
 vits_path = '/'.join(curr_dir)
 from utils.hparams import get_hparams_from_file
 # See: https://github.com/espeak-ng/espeak-ng/blob/master/docs/languages.md
-dir_data = vits_path + '/LJSpeech-1.1'
+dir_data = "./datasets-vits2"
 config = vits_path + "/datasets/ljs_base/config.yaml"
 symlink = "DUMMY1"
 n_val = 100
