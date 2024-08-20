@@ -12,7 +12,8 @@ task = Task.create(
     requirements_file='./requirements.txt',
     docker='alejandroquinterosil/clearml-image:v11',
     argparse_args=[
-        ("data_dir", "./datasets-vits2/wavs")
+        ("data_dir", "./datasets-vits2/wavs"),
+        ("config", "datasets/ljs_base/config.yaml")
         ],
     add_task_init_call=True
 )
