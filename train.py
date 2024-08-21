@@ -29,23 +29,6 @@ global_step = 0
 def main():
     """ClearML setup"""
 
-    dataset = Dataset.get(
-        dataset_id="d087dddf638d4ba3a616cebe3fd02454"
-    )
-
-    path = dataset.get_mutable_local_copy(
-        target_folder="./datasets-vits2",
-        overwrite=True
-    )
-    print("Path Location: ", path)
-
-    # Define the path and the link name
-    link_name = 'DUMMY1'
-    target_path = "./datasets-vits2/wavs"
-
-    # Create the symbolic link
-    if not os.path.islink(link_name):
-        os.symlink(target_path, link_name)
 
     """Assume Single Node Multi GPUs Training Only"""
     assert torch.cuda.is_available(), "CPU training is not allowed."

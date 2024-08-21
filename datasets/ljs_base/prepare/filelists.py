@@ -2,13 +2,22 @@ import os
 import sys
 import pandas as pd
 import sys
+import argparse
+
+# Step 1: Create the parser
+parser = argparse.ArgumentParser()
+
+# Step 2: Define the arguments
+parser.add_argument('--data_dir', type=str, required=True, help='The output URI (e.g., s3://bucket-name/)')
+
+# Step 3: Parse the arguments
+args = parser.parse_args()
 
 curr_dir = os.getcwd().split('/')
 vits_path = '/'.join(curr_dir)
 from utils.hparams import get_hparams_from_file
 # See: https://github.com/espeak-ng/espeak-ng/blob/master/docs/languages.md
-
-dir_data = "./datasets-vits2"
+dir_data = args.data_dir + '/LJSpeech-1.1'
 config = vits_path + "/datasets/ljs_base/config.yaml"
 symlink = "DUMMY1"
 n_val = 100

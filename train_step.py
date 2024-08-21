@@ -14,7 +14,7 @@ task = Task.create(
     requirements_file='./requirements.txt',
     docker='alejandroquinterosil/clearml-image:v11',
     argparse_args=[
-        ("config", "datasets/ljs_base/config.yaml"),
+        ("config", "TO_BE_OVERWRITTEN"),
         ("model", "ljs_base")
         ],
     add_task_init_call=True
