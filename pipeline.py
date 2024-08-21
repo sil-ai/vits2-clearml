@@ -18,42 +18,41 @@ pipe = PipelineController(
 pipe.set_default_execution_queue("jobs_urgent")
 
 pipe.add_step(
-    name='upload_data',
+    name='upload_step',
     base_task_project='Vits2 Project',
-    base_task_name='Upload Dataset'
+    base_task_name='Upload Dataset - Final',
 )
 
-pipe.add_step(
-    name='preprocess_data_mel',
-    parents=["upload_data"],
-    base_task_project='Vits2 Project',
-    base_task_name='Preprocess Vits2 - Meltransform',
-    parameter_override={
-        'General/data_dir': '${upload_data.artifacts.path}',
-        'General/config': '${upload_data.artifacts.config}'
-    }
-)
+# pipe.add_step(
+#     name='preprocess_data_mel',
+#     parents=["upload_data"],
+#     base_task_project='Vits2 Project',
+#     base_task_name='Preprocess Vits2 - Meltransform',
+#     parameter_override={
+#         'General/data_dir': '${upload_data.artifacts.path}',
+#         'General/config': '${upload_data.artifacts.config}'
+#     }
+# )
 
-pipe.add_step(
-    name='preprocess_data_filelists',
-    parents=["preprocess_data_mel"],
-    base_task_project='Vits2 Project',
-    base_task_name='Preprocess Vits2 - Filelists',
-    parameter_override={
-        'General/data_dir': '${upload_data.artifacts.path}',
-    }
-)
+# pipe.add_step(
+#     name='preprocess_data_filelists',
+#     parents=["preprocess_data_mel"],
+#     base_task_project='Vits2 Project',
+#     base_task_name='Preprocess Vits2 - Filelists',
+#     parameter_override={
+#         'General/data_dir': '${upload_data.artifacts.path}',
+#     }
+# )
 
-pipe.add_step(
-    name='train',
-    parents=["preprocess_data_filelists"],
-    base_task_project='Vits2 Project',
-    base_task_name='Preprocess Vits2 - Filelists',
-    parameter_override={
-        'General/data_dir': '${upload_data.artifacts.path}',
-    }
-)
+# pipe.add_step(
+#     name='train',
+#     parents=["preprocess_data_filelists"],
+#     base_task_project='Vits2 Project',
+#     base_task_name='Training Vits2',
+#     parameter_override={
+#         'General/config': '${upload_data.artifacts.path}/datasets/ljs_base/config.yaml',
+#     }
+# )
 
 
-# pipe.start_locally()
-pipe.start()
+pipe.start_locally()
