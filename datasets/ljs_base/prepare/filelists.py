@@ -1,5 +1,4 @@
 import os
-import sys
 import pandas as pd
 import sys
 import argparse
@@ -13,8 +12,11 @@ parser.add_argument('--data_dir', type=str, required=True, help='The output URI 
 # Step 3: Parse the arguments
 args = parser.parse_args()
 
-curr_dir = os.getcwd().split('/')
+curr_dir = os.getcwd().split('/')[:-3]
 vits_path = '/'.join(curr_dir)
+utils_path = vits_path + '/utils'
+sys.path.append(vits_path)
+sys.path.append(utils_path)
 from utils.hparams import get_hparams_from_file
 # See: https://github.com/espeak-ng/espeak-ng/blob/master/docs/languages.md
 dir_data = args.data_dir
