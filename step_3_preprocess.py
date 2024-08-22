@@ -13,7 +13,7 @@ task = Task.create(
     requirements_file='./requirements.txt',
     docker='alejandroquinterosil/clearml-image:v11',
     argparse_args=[
-        ("data_dir", "./datasets-vits2"),
+        ("data_dir", "/root/.clearml/venvs-builds/3.10/task_repository/vits2-clearml.git/sil-vits2"),
         ("config", "datasets/ljs_base/config.yaml")
         ],
     add_task_init_call=True
@@ -33,7 +33,7 @@ task = Task.create(
     docker='alejandroquinterosil/clearml-image:v11',
     add_task_init_call=True,
     argparse_args=[
-        ("data_dir", "./datasets-vits2"),
+        ("data_dir", "/root/.clearml/venvs-builds/3.10/task_repository/vits2-clearml.git/sil-vits2"),
         ]
 )
 

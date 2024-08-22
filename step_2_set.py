@@ -28,12 +28,6 @@ path = dataset.get_mutable_local_copy(
 )
 
 print("Path Location: ", path)
-
-
-# Upload artifact
-task.upload_artifact('dataset_path', artifact_object=path)
-task.upload_artifact('config', artifact_object=path+"datasets/ljs_base/config.yaml")
-
 # Define the path and the link name
 link_name = 'DUMMY1'
 target_path = "./datasets-vits2/wavs"
