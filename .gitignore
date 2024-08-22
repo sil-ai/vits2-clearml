@@ -21,3 +21,4 @@ datasets/madasr23_base/filelists
 .env
 
 **/datasets-vits2/*
+**/sil-vits2/*
