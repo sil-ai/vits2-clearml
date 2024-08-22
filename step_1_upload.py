@@ -3,9 +3,7 @@ import argparse
 import os
 from clearml import StorageManager, Dataset, Task
 
-task = Task.init(project_name='Vits2 Project', task_name='Upload Dataset')
 
-task.execute_remotely(queue_name='jobs_urgent', exit_process=True)
 
 # Step 4: Use the parsed arguments in your script
 # Create a dataset with ClearML's Dataset class
@@ -24,4 +22,7 @@ dataset.upload()
 
 # Commit dataset changes
 dataset.finalize()
+
+
+
 

@@ -20,7 +20,7 @@ pipe.set_default_execution_queue("jobs_urgent")
 pipe.add_step(
     name='upload_step',
     base_task_project='Vits2 Project',
-    base_task_name='Upload Dataset - Final',
+    base_task_name='Set Dataset',
 )
 
 # pipe.add_step(
@@ -29,8 +29,7 @@ pipe.add_step(
 #     base_task_project='Vits2 Project',
 #     base_task_name='Preprocess Vits2 - Meltransform',
 #     parameter_override={
-#         'General/data_dir': '${upload_data.artifacts.path}',
-#         'General/config': '${upload_data.artifacts.config}'
+#         'General/data_dir': '${upload_step.artifacts.dataset_path}',
 #     }
 # )
 
