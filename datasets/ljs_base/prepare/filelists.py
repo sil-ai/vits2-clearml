@@ -21,7 +21,7 @@ sys.path.append(utils_path)
 from utils.hparams import get_hparams_from_file
 # See: https://github.com/espeak-ng/espeak-ng/blob/master/docs/languages.md
 dir_data = args.data_dir
-config = vits_path + "/datasets/ljs_base/config.yaml"
+config = "../config.yaml"
 symlink = "DUMMY1"
 n_val = 100
 n_test = 500
