@@ -30,11 +30,8 @@ task = Task.create(
     branch='main',
     script='datasets/ljs_base/prepare/filelists.py',
     requirements_file='./requirements.txt',
-    docker='alejandroquinterosil/clearml-image:v11',
+    docker='alejandroquinterosil/clearml-image:v12',
     add_task_init_call=True,
-    argparse_args=[
-        ("data_dir", "/root/.clearml/venvs-builds/3.10/task_repository/vits2-clearml.git/sil-vits2"),
-        ]
 )
 
 task.execute_remotely(queue_name='jobs_urgent', exit_process=True)

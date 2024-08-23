@@ -4,6 +4,7 @@ import pandas as pd
 import sys
 
 curr_dir = os.getcwd().split('/')
+print("Current Directory: ", curr_dir)
 vits_path = '/'.join(curr_dir)
 utils_path = vits_path + '/utils'
 sys.path.append(vits_path)
