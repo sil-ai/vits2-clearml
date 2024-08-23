@@ -26,7 +26,7 @@ if not os.path.islink(link_name):
 from utils.hparams import get_hparams_from_file
 # See: https://github.com/espeak-ng/espeak-ng/blob/master/docs/languages.md
 dir_data = path
-config = curr_dir+"/datasets/ljs_base/config.yaml"
+config = vits_path+"/datasets/ljs_base/config.yaml"
 symlink = "DUMMY1"
 n_val = 100
 n_test = 500
