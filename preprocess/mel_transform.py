@@ -19,6 +19,7 @@ log_format = "%(asctime)s %(message)s"
 logging.basicConfig(stream=sys.stdout, level=logging.INFO, format=log_format, datefmt="%m/%d %I:%M:%S %p")
 
 
+
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--data_dir", type=str, required=True, help="Directory containing audio files")

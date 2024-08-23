@@ -1,16 +1,7 @@
 import os
+from clearml import Dataset
 import pandas as pd
 import sys
-import argparse
-
-# Step 1: Create the parser
-parser = argparse.ArgumentParser()
-
-# Step 2: Define the arguments
-parser.add_argument('--data_dir', type=str, required=True, help='The output URI (e.g., s3://bucket-name/)')
-
-# Step 3: Parse the arguments
-args = parser.parse_args()
 
 curr_dir = os.getcwd().split('/')[:-3]
 vits_path = '/'.join(curr_dir)
@@ -18,10 +9,24 @@ utils_path = vits_path + '/utils'
 sys.path.append(vits_path)
 sys.path.append(utils_path)
 
+dataset = Dataset.get(dataset_id="6ec7f9f4265049039400b65a889199a4")
+
+path = dataset.get_mutable_local_copy(
+    target_folder="./sil-vits2",
+    overwrite=True
+)
+
+link_name = 'DUMMY1'
+target_path = path + "/wavs"
+
+# Create the symbolic link
+if not os.path.islink(link_name):
+    os.symlink(target_path, link_name)
+
 from utils.hparams import get_hparams_from_file
 # See: https://github.com/espeak-ng/espeak-ng/blob/master/docs/languages.md
-dir_data = args.data_dir
-config = "/root/.clearml/venvs-builds/3.10/task_repository/vits2-clearml.git/datasets/ljs_base/config.yaml"
+dir_data = path
+config = "../config.yaml"
 symlink = "DUMMY1"
 n_val = 100
 n_test = 500
