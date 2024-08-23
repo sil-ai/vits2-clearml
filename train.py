@@ -33,11 +33,13 @@ def main():
     """Assume Single Node Multi GPUs Training Only"""
     assert torch.cuda.is_available(), "CPU training is not allowed."
 
+
     n_gpus = torch.cuda.device_count()
     os.environ["MASTER_ADDR"] = "localhost"
     os.environ["MASTER_PORT"] = "8000"
 
-    hps = get_hparams()
+    vits_path = get_clearml_paths()
+    hps = get_hparams(vits_path)
     mp.spawn(
         run,
         nprocs=n_gpus,
@@ -46,6 +48,25 @@ def main():
             hps,
         ),
     )
+
+def get_clearml_paths():
+    # Getting vits path
+    curr_dir = os.getcwd().split('/')
+    print("Current Directory: ", curr_dir)
+    vits_path = '/'.join(curr_dir)
+
+    # Getting the dataset - data_dir
+    dataset = Dataset.get(dataset_id="6ec7f9f4265049039400b65a889199a4")
+    path = dataset.get_mutable_local_copy(
+        target_folder="./sil-vits2",
+        overwrite=True
+    )
+    link_name = 'DUMMY1'
+    target_path = path + "/wavs"
+    if not os.path.islink(link_name):
+        os.symlink(target_path, link_name)
+
+    return vits_path
 
 
 def run(rank, n_gpus, hps):

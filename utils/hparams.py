@@ -38,25 +38,44 @@ class HParams:
         return self.__dict__.__repr__()
 
 
-def get_hparams() -> HParams:
+def get_hparams(vits_clearml_path=None) -> HParams:
     parser = argparse.ArgumentParser()
-    parser.add_argument("-c", "--config", type=str, default="./datasets/base/config.yaml", help="YAML file for configuration")
     parser.add_argument("-m", "--model", type=str, required=True, help="Model name")
-    args = parser.parse_args()
 
-    # assert that path cnsists directory "datasets" and file "config.yaml
-    assert os.path.exists("./datasets"), "`datasets` directory not found, navigate to the root of the project."
-    assert os.path.exists(f"./datasets/{args.model}"), f"`{args.model}` not found in `./datasets/`"
-    assert os.path.exists(f"./datasets/{args.model}/config.yaml"), f"`config.yaml` not found in `./datasets/{args.model}/`"
+    if vits_clearml_path:
+        args = parser.parse_args()
 
-    model_dir = f"./datasets/{args.model}/logs"
-    if not os.path.exists(model_dir):
-        os.makedirs(model_dir)
+        assert os.path.exists(vits_clearml_path + "/datasets"), "`datasets` directory not found, navigate to the root of the project."
+        assert os.path.exists(vits_clearml_path + "/datasets/{args.model}"), f"`{args.model}` not found in `./datasets/`"
+        assert os.path.exists(vits_clearml_path + f"/datasets/{args.model}/config.yaml"), f"`config.yaml` not found in `./datasets/{args.model}/`"
 
-    config_path = args.config
-    hparams = get_hparams_from_file(config_path)
-    hparams.model_dir = model_dir
-    return hparams
+        model_dir = vits_clearml_path + "/datasets/{args.model}/logs"
+        if not os.path.exists(model_dir):
+            os.makedirs(model_dir)
+
+        config_path = vits_clearml_path + f"/datasets/{args.model}/config.yaml"
+        hparams = get_hparams_from_file(config_path)
+        hparams.model_dir = model_dir
+        return hparams
+
+    else:
+        parser.add_argument("-m", "--model", type=str, required=True, help="Model name")
+        args = parser.parse_args()
+
+        # assert that path cnsists directory "datasets" and file "config.yaml
+        assert os.path.exists("./datasets"), "`datasets` directory not found, navigate to the root of the project."
+        assert os.path.exists(f"./datasets/{args.model}"), f"`{args.model}` not found in `./datasets/`"
+        assert os.path.exists(f"./datasets/{args.model}/config.yaml"), f"`config.yaml` not found in `./datasets/{args.model}/`"
+
+        model_dir = f"./datasets/{args.model}/logs"
+        if not os.path.exists(model_dir):
+            os.makedirs(model_dir)
+
+
+        config_path = args.config
+        hparams = get_hparams_from_file(config_path)
+        hparams.model_dir = model_dir
+        return hparams
 
 
 def get_hparams_from_file(config_path: str) -> HParams:
