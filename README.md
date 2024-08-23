@@ -120,6 +120,11 @@ def parse_args():
 
 3. step_3_train.py
 
+How to run it:
+´´´
+python step_3_train.py
+´´´
+
 Finally this step, trains the model. Some docker arguments are passed, like the credentials,
 this is because sometimes clearml will take credentials configured on the server, and
 those may not have the necessary access for the S3 bucket or something else, so you
