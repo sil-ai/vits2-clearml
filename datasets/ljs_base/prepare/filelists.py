@@ -3,7 +3,7 @@ from clearml import Dataset
 import pandas as pd
 import sys
 
-curr_dir = os.getcwd().split('/')[:-3]
+curr_dir = os.getcwd().split('/')
 vits_path = '/'.join(curr_dir)
 utils_path = vits_path + '/utils'
 sys.path.append(vits_path)
