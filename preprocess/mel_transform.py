@@ -21,8 +21,6 @@ logging.basicConfig(stream=sys.stdout, level=logging.INFO, format=log_format, da
 
 
 
-
-
 def parse_args():
     # Config
     curr_dir = os.getcwd().split('/')

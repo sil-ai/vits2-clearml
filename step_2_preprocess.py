@@ -12,10 +12,6 @@ task = Task.create(
     script='preprocess/mel_transform.py',
     requirements_file='./requirements.txt',
     docker='alejandroquinterosil/clearml-image:v11',
-    argparse_args=[
-        ("data_dir", "/root/.clearml/venvs-builds/3.10/task_repository/vits2-clearml.git/sil-vits2"),
-        ("config", "datasets/ljs_base/config.yaml")
-        ],
     add_task_init_call=True
 )
 
