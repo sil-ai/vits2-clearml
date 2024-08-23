@@ -7,7 +7,7 @@ below, to know how to modify them in order to get a desired result:
 
 # ClearML Orchestration Scripts
 
-1. step_1_upload.py
+1. `step_1_upload.py`
 
 How to run it:
 ```
@@ -40,7 +40,7 @@ dataset.finalize()
 ```
 
 
-2. step_2_preprocess.py
+2. `step_2_preprocess.py`
 
 How to run it:
 ```
@@ -120,7 +120,7 @@ def parse_args():
     return hparams
 ```
 
-3. step_3_train.py
+3. `step_3_train.py`
 
 How to run it:
 ```
