@@ -4,6 +4,7 @@ import glob
 import logging
 import argparse
 import traceback
+from clearml import Dataset
 from tqdm import tqdm
 import torch
 import torch.multiprocessing as mp
@@ -20,14 +21,28 @@ logging.basicConfig(stream=sys.stdout, level=logging.INFO, format=log_format, da
 
 
 
-def parse_args():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--data_dir", type=str, required=True, help="Directory containing audio files")
-    parser.add_argument("-c", "--config", type=str, required=True, help="YAML file for configuration")
-    args = parser.parse_args()
 
-    hparams = get_hparams_from_file(args.config)
-    hparams.data_dir = args.data_dir
+
+def parse_args():
+    # Config
+    curr_dir = os.getcwd().split('/')
+    print("Current Directory: ", curr_dir)
+    vits_path = '/'.join(curr_dir)
+
+    # Getting the dataset - data_dir
+    dataset = Dataset.get(dataset_id="6ec7f9f4265049039400b65a889199a4")
+    path = dataset.get_mutable_local_copy(
+        target_folder="./sil-vits2",
+        overwrite=True
+    )
+    link_name = 'DUMMY1'
+    target_path = path + "/wavs"
+    # Create the symbolic link
+    if not os.path.islink(link_name):
+        os.symlink(target_path, link_name)
+
+    hparams = get_hparams_from_file(vits_path+"/datasets/ljs_base/config.yaml")
+    hparams.data_dir = target_path
     return hparams
 
 
