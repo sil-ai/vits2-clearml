@@ -168,3 +168,5 @@ config and model, but I only pass model. train.py it self will know where the co
 See ´get_hparams()´ in utils/hparams.py.
 
 credits: https://github.com/daniilrobnikov/vits2
+
+
