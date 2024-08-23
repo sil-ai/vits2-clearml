@@ -46,7 +46,7 @@ def get_hparams(vits_clearml_path=None) -> HParams:
         args = parser.parse_args()
 
         assert os.path.exists(vits_clearml_path + "/datasets"), "`datasets` directory not found, navigate to the root of the project."
-        assert os.path.exists(vits_clearml_path + "/datasets/{args.model}"), f"`{args.model}` not found in `{vits_clearml_path}/datasets/`"
+        assert os.path.exists(vits_clearml_path + f"/datasets/{args.model}"), f"`{args.model}` not found in `{vits_clearml_path}/datasets/`"
         assert os.path.exists(vits_clearml_path + f"/datasets/{args.model}/config.yaml"), f"`config.yaml` not found in `{vits_clearml_path}/datasets/{args.model}/`"
 
         model_dir = vits_clearml_path + "/datasets/{args.model}/logs"
