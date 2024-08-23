@@ -5,12 +5,14 @@ This repo is an adaptation of vits2 model to be able to run on ClearML platform 
 The scripts added to run the model are, each of them are going to be explained on detail
 below, to know how to modify them in order to get a desired result:
 
+# ClearML Orchestration Scripts
+
 1. step_1_upload.py
 
 How to run it:
-´´´
+```
 python step_1_upload.py --dataset_path=./LJSpeech-1.1 --bucket_name=sil-vits2 --dataset_name=LJSpeech-1.1
-´´´
+```
 
 This script is very simple, just takes some dataset you have on local, and upload it to S3,
 as well as to ClearML Data Manager. Change the arguments to specify dataset path, buacket where
@@ -20,7 +22,7 @@ is run locally.
 We created bucket sil-vits2 for this repo's task, so you can use that one to store your datasets.
 
 Here is the code performed:
-´´´
+```
 dataset = Dataset.create(
     dataset_project="Vits2 - Dev",
     dataset_name= f"{args.dataset_name}",
@@ -35,15 +37,15 @@ dataset.upload()
 
 # Commit dataset changes
 dataset.finalize()
-´´´
+```
 
 
 2. step_2_preprocess.py
 
 How to run it:
-´´´
+```
 python step_2_preprocess.py
-´´´
+```
 
 This script performs the two preprocessing tasks, specified on vits2 repo.
 
@@ -54,7 +56,7 @@ So naturally this script just invokes them, waits for meltransform to finish, an
 executing filelists.py.
 
 
-´´´
+```
 # Mel transform preprocessing task
 task = Task.create(
     project_name='Vits2 Project',
@@ -84,7 +86,7 @@ task = Task.create(
 
 task.execute_remotely(queue_name='jobs_urgent', exit_process=True)
 task.close()  # Close the task after execution
-´´´
+```
 
 NOTE: In the original vits2 repo, you pass the config path and dataset path to meltransform.
 But that did not work in clearml, sisnce the scripts can be run on different machine each time,
@@ -94,7 +96,7 @@ take that path. This is currently one of the problems we are working on.
 So for example, `parse_args()` on mel_transform.py, that used to parse the args for the paths
 of the data and config, got replaced by:
 
-´´´
+```
 def parse_args():
     # Config
     curr_dir = os.getcwd().split('/')
@@ -116,21 +118,21 @@ def parse_args():
     hparams = get_hparams_from_file(vits_path+"/datasets/ljs_base/config.yaml")
     hparams.data_dir = target_path
     return hparams
-´´´
+```
 
 3. step_3_train.py
 
 How to run it:
-´´´
+```
 python step_3_train.py
-´´´
+```
 
 Finally this step, trains the model. Some docker arguments are passed, like the credentials,
 this is because sometimes clearml will take credentials configured on the server, and
 those may not have the necessary access for the S3 bucket or something else, so you
 can always use yours.
 
-´´´
+```
 task = Task.create(
     project_name='Vits2 Project',
     task_name='Training Vits2',
@@ -159,7 +161,7 @@ task.set_base_docker(
             )
 
 task.execute_remotely(queue_name='jobs_urgent', exit_process=True)
-´´´
+```
 
 NOTE: Here happends the same with the arguments, the original repo requires the arguments
 config and model, but I only pass model. train.py it self will know where the config path is.
