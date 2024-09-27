@@ -19,12 +19,13 @@ from data_utils import TextAudioLoader, TextAudioCollate, DistributedBucketSampl
 from losses import generator_loss, discriminator_loss, feature_loss, kl_loss, kl_loss_normal
 from utils.mel_processing import wav_to_mel, spec_to_mel, spectral_norm
 from utils.model import slice_segments, clip_grad_value_
-from clearml import Dataset
+from clearml import Dataset, Task
 
 
 torch.backends.cudnn.benchmark = True
 global_step = 0
 
+task_clearml = Task.init(project_name='Vits2 Project', task_name='Training Task')
 
 def main():
     """ClearML setup"""
@@ -48,6 +49,9 @@ def main():
             hps,
         ),
     )
+
+
+
 
 def get_clearml_paths():
     # Getting vits path
@@ -221,6 +225,19 @@ def train_and_evaluate(rank, epoch, hps, nets, optims, schedulers, scaler, loade
                 # evaluate(hps, net_g, eval_loader, writer_eval)
                 task.save_checkpoint(net_g, optim_g, hps.train.learning_rate, epoch, os.path.join(hps.model_dir, "G_{}.pth".format(global_step)))
                 task.save_checkpoint(net_d, optim_d, hps.train.learning_rate, epoch, os.path.join(hps.model_dir, "D_{}.pth".format(global_step)))
+                # Ensure the files exist before uploading
+                g_checkpoint_path = os.path.join(hps['model_dir'], "G_{}.pth".format(global_step))
+                d_checkpoint_path = os.path.join(hps['model_dir'], "D_{}.pth".format(global_step))
+
+                if os.path.exists(g_checkpoint_path):
+                    task_clearml.upload_artifact("G_{}.pth".format(global_step), g_checkpoint_path)
+                else:
+                    print(f"File {g_checkpoint_path} does not exist.")
+
+                if os.path.exists(d_checkpoint_path):
+                    task_clearml.upload_artifact("D_{}.pth".format(global_step), d_checkpoint_path)
+                else:
+                    print(f"File {d_checkpoint_path} does not exist.")
         global_step += 1
 
 

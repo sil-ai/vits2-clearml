@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 pipe = PipelineController(
      name='pipeline vits2',
      project='Vits2 Project',
-     version='0.0.1',
+     version='0.0.2',
      add_pipeline_tags=False,
 )
 
