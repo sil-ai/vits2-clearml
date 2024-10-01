@@ -2,6 +2,7 @@ import os
 from clearml import Dataset
 import pandas as pd
 import sys
+from clearml import Task
 
 curr_dir = os.getcwd().split('/')
 print("Current Directory: ", curr_dir)
@@ -10,7 +11,21 @@ utils_path = vits_path + '/utils'
 sys.path.append(vits_path)
 sys.path.append(utils_path)
 
-dataset = Dataset.get(dataset_id="6ec7f9f4265049039400b65a889199a4")
+task = Task.init(
+    project_name='Vits2 Project',
+    task_name='Preprocess Vits2 - Filelists',
+    task_type=Task.TaskTypes.preprocessing
+)
+
+task.execute_remotely(queue_name='jobs_urgent', exit_process=True)
+
+args = {
+    'dataset_id': 'TO_BE_OVERWRITTEN'
+}
+
+task.connect(args)
+
+dataset = Dataset.get(dataset_id=args["dataset_id"])
 
 path = dataset.get_mutable_local_copy(
     target_folder="./sil-vits2",
@@ -145,3 +160,23 @@ data_test = data.iloc[n_val: n_val + n_test]
 data_train.to_csv(vits_path+"/datasets/ljs_base/filelists/train.txt", sep="|", index=False, header=False)
 data_val.to_csv(vits_path+"/datasets/ljs_base/filelists/val.txt", sep="|", index=False, header=False)
 data_test.to_csv(vits_path+"/datasets/ljs_base/filelists/test.txt", sep="|", index=False, header=False)
+
+
+# Create a new dataset version and upload the transformed files
+new_dataset = Dataset.create(
+    dataset_project="Vits2 - Dev",
+    dataset_name="LJSpeech-1.1 Transformed Filelists",
+    parent_datasets=[path]
+)
+
+# Add the transformed files
+new_dataset.add_files(path=path)
+
+# Upload and finalize the dataset
+new_dataset.upload()
+new_dataset.finalize()
+
+# Output the new dataset ID
+new_dataset_id = new_dataset.id
+task.upload_artifact('new_dataset_id', new_dataset_id)
+print(f"New dataset ID: {new_dataset_id}")

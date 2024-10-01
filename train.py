@@ -26,6 +26,24 @@ torch.backends.cudnn.benchmark = True
 global_step = 0
 
 task_clearml = Task.init(project_name='Vits2 Project', task_name='Training Task')
+aws_region = os.getenv('AWS_REGION')
+aws_access_key_id = os.getenv('AWS_ACCESS_KEY_ID')
+aws_secret_access_key = os.getenv('AWS_SECRET_ACCESS_KEY')
+
+task_clearml.set_base_docker(
+                docker_image="alejandroquinterosil/clearml-image:v11",
+                docker_arguments=[
+                f"--env AWS_REGION={aws_region}",
+                f"--env AWS_ACCESS_KEY_ID={aws_access_key_id}",
+                f"--env AWS_SECRET_ACCESS_KEY={aws_secret_access_key}",
+                "--shm-size 8g"]
+            )
+
+task_clearml.execute_remotely(queue_name='jobs_urgent', exit_process=True)
+args = {
+    'dataset_id': 'TO_BE_OVERWRITTEN'
+}
+task_clearml.connect(args)
 
 def main():
     """ClearML setup"""
@@ -60,7 +78,7 @@ def get_clearml_paths():
     vits_path = '/'.join(curr_dir)
 
     # Getting the dataset - data_dir
-    dataset = Dataset.get(dataset_id="6ec7f9f4265049039400b65a889199a4")
+    dataset = Dataset.get(dataset_id=args["dataset_id"])
     path = dataset.get_mutable_local_copy(
         target_folder="./sil-vits2",
         overwrite=True

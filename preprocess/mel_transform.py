@@ -2,7 +2,6 @@ import os
 import sys
 import glob
 import logging
-import argparse
 import traceback
 from clearml import Dataset
 from tqdm import tqdm
@@ -10,8 +9,7 @@ import torch
 import torch.multiprocessing as mp
 from concurrent.futures import ProcessPoolExecutor
 import torchaudio
-
-
+from clearml import Task
 from utils.hparams import get_hparams_from_file, HParams
 from utils.mel_processing import wav_to_mel
 
@@ -19,6 +17,26 @@ os.environ["OMP_NUM_THREADS"] = "1"
 log_format = "%(asctime)s %(message)s"
 logging.basicConfig(stream=sys.stdout, level=logging.INFO, format=log_format, datefmt="%m/%d %I:%M:%S %p")
 
+task = Task.init(
+    project_name='Vits2 Project',
+    task_name='Preprocess Vits2 - Meltransform',
+    task_type=Task.TaskTypes.preprocessing
+)
+
+task.execute_remotely(queue_name='jobs_urgent', exit_process=True)
+
+args = {
+    'dataset_id': 'TO_BE_OVERWRITTEN'
+}
+
+task.connect(args)
+
+# Getting the dataset - data_dir
+dataset = Dataset.get(dataset_id=args["dataset_id"])
+path = dataset.get_mutable_local_copy(
+    target_folder="./sil-vits2",
+    overwrite=True
+)
 
 
 def parse_args():
@@ -27,12 +45,6 @@ def parse_args():
     print("Current Directory: ", curr_dir)
     vits_path = '/'.join(curr_dir)
 
-    # Getting the dataset - data_dir
-    dataset = Dataset.get(dataset_id="6ec7f9f4265049039400b65a889199a4")
-    path = dataset.get_mutable_local_copy(
-        target_folder="./sil-vits2",
-        overwrite=True
-    )
     link_name = 'DUMMY1'
     target_path = path + "/wavs"
     # Create the symbolic link
@@ -137,3 +149,22 @@ if __name__ == "__main__":
     size_wav = get_size_by_ext(hps.data_dir, extension)
     logging.info(f"{extension}: \t{human_readable_size(size_wav)}")
     logging.info(f"Total: \t\t{human_readable_size(size_spec + size_wav)}")
+
+    # Create a new dataset version and upload the transformed files
+    new_dataset = Dataset.create(
+        dataset_project="Vits2 - Dev",
+        dataset_name="LJSpeech-1.1 Transformed",
+        parent_datasets=[path]
+    )
+
+    # Add the transformed files
+    new_dataset.add_files(path=path)
+
+    # Upload and finalize the dataset
+    new_dataset.upload()
+    new_dataset.finalize()
+
+    # Output the new dataset ID
+    new_dataset_id = new_dataset.id
+    task.upload_artifact('new_dataset_id', new_dataset_id)
+    print(f"New dataset ID: {new_dataset_id}")

@@ -5,6 +5,17 @@ This repo is an adaptation of vits2 model to be able to run on ClearML platform 
 The scripts added to run the model are, each of them are going to be explained on detail
 below, to know how to modify them in order to get a desired result:
 
+# Getting test data (LJSpeech)
+
+You can get LJSpeech dataset by just running this lines of code:
+
+```
+wget https://data.keithito.com/data/speech/LJSpeech-1.1.tar.bz2
+tar -xvf LJSpeech-1.1.tar.bz2
+cd LJSpeech-1.1/wavs
+rm -rf wavs
+```
+
 # ClearML Orchestration Scripts
 
 1. `step_1_upload.py`
