@@ -19,7 +19,7 @@ from data_utils import TextAudioLoader, TextAudioCollate, DistributedBucketSampl
 from losses import generator_loss, discriminator_loss, feature_loss, kl_loss, kl_loss_normal
 from utils.mel_processing import wav_to_mel, spec_to_mel, spectral_norm
 from utils.model import slice_segments, clip_grad_value_
-from clearml import Dataset, Task
+from clearml import Dataset, Task, Logger
 
 
 torch.backends.cudnn.benchmark = True
@@ -44,6 +44,12 @@ args = {
     'dataset_id': 'TO_BE_OVERWRITTEN'
 }
 task_clearml.connect(args)
+
+logger = task.get_logger()
+
+def log_loss_metrics(losses):
+    for loss_type, loss_value in losses.items():
+        logger.report_scalar(title=loss_type, series=f"{loss_type}", value=loss_value, iteration=global_step)
 
 def main():
     """ClearML setup"""
@@ -212,6 +218,19 @@ def train_and_evaluate(rank, epoch, hps, nets, optims, schedulers, scaler, loade
 
                 loss_fm = feature_loss(fmap_r, fmap_g)
                 loss_gen_all = loss_gen + loss_fm + loss_mel + loss_dur + loss_kl_dur + loss_kl_audio  # TODO + loss_kl_text
+
+                # Losses dictionary
+                losses_dict = {
+                    "loss_gen": loss_gen,
+                    "loss_fm": loss_fm,
+                    "loss_mel": loss_mel,
+                    "loss_dur": loss_dur,
+                    "loss_kl_dur": loss_kl_dur,
+                    "loss_kl_audio": loss_kl_audio,
+                }
+                log_loss_metrics(losses_dict)
+
+
         optim_g.zero_grad()
         scaler.scale(loss_gen_all).backward()
         scaler.unscale_(optim_g)
