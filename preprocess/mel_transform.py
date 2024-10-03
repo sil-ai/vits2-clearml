@@ -20,7 +20,7 @@ logging.basicConfig(stream=sys.stdout, level=logging.INFO, format=log_format, da
 task = Task.init(
     project_name='Vits2 Project',
     task_name='Preprocess Vits2 - Meltransform',
-    task_type=Task.TaskTypes.preprocessing
+    task_type=Task.TaskTypes.data_processing
 )
 
 task.execute_remotely(queue_name='jobs_urgent', exit_process=True)
