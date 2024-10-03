@@ -7,7 +7,8 @@ below, to know how to modify them in order to get a desired result:
 
 # Getting test data (LJSpeech)
 
-You can get LJSpeech dataset by just running this lines of code:
+You can get LJSpeech dataset by just running this lines of code, run it from the
+root of the repo so the folder sits in the root as well:
 
 ```
 wget https://data.keithito.com/data/speech/LJSpeech-1.1.tar.bz2
@@ -15,6 +16,53 @@ tar -xvf LJSpeech-1.1.tar.bz2
 cd LJSpeech-1.1/wavs
 rm -rf wavs
 ```
+
+# Explanation of dataset folder.
+
+- `datasets`
+
+This folder contins metadata and a preprocessing script for each dataset. `datasets`
+contains three sub-folders. Each one for every single of the dataset example
+the repo shows `ljs`, `madasr23_base`, `vctk`. If one wants to use a custom dataset,
+it's possible, but just as with the other dataset, a sub-folder would have to be
+created as well with the corresponding metadata. This is explained in detail in the
+vits2 repo.
+
+**Components of each dataset folder**
+
+- `filelists`
+
+This subfolder contains three files. `test.txt`, `train.txt`, `val.txt`.
+Each line of this paths represents a path to a .wav in each of this dataset partitions.
+
+- `prepare`
+
+This subfolder contains a script `filelists.py`. This script was originally written
+only on `.ipynb` but to be executable on clearml it has to be converted to `.py`.
+
+This script essentially does:
+
+1. Text cleaning
+2. Tokenization
+3. Data split (Populates the `test.txt`, `train.txt` and `val.txt` files)
+4. Generate vocabulary.
+
+- `config.yaml`
+
+This is a specification file for the model, data and training of vits2.
+Here one can specify:
+
+1. Model Hyperparameters
+2. Data Location
+3. Text Cleaners
+And others.
+
+- `vocab.txt`
+
+File containing the vocabulary build from `filelists.py`.
+
+
+
 
 # ClearML Orchestration Scripts
 
