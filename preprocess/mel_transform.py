@@ -9,7 +9,7 @@ import torch
 import torch.multiprocessing as mp
 from concurrent.futures import ProcessPoolExecutor
 import torchaudio
-from clearml import Task
+from clearml import Task, Logger
 from utils.hparams import get_hparams_from_file, HParams
 from utils.mel_processing import wav_to_mel
 
@@ -40,6 +40,10 @@ path = dataset.get_mutable_local_copy(
 )
 print("Dataset Path: ", path)
 
+def set_up_media_logging():
+    logger = Logger.current_logger()
+    logger.set_default_upload_destination("s3://sil-vits2/audio-reporting/{task.id}")
+    return logger
 
 def parse_args():
     # Config
@@ -138,11 +142,27 @@ def human_readable_size(size):
 if __name__ == "__main__":
     from time import time
 
-    hps = parse_args()
+    logger = set_up_media_logging()
 
+    try:
+        # Report the first file of the dataset
+        first_file_path = path + "/wavs/LJ001-0001.wav"
+        logger.report_media("First File", first_file_path, iteration=0)
+    except Exception as e:
+        print(f"Failed to report media: {e}")
+
+    hps = parse_args()
     start = time()
     process_data(hps)
     logging.info(f"Processed data in {time() - start} seconds")
+
+    try:
+        # Report the first file of the dataset after processing
+        first_file_path_spec = path + "/wavs/LJ001-0001.spec.pt"
+        logger.report_media("First File After Processing(Spec)", first_file_path_spec, iteration=0)
+        logger.report_media("First File After Processing(Wav)", first_file_path, iteration=0)
+    except Exception as e:
+        print(f"Failed to report media: {e}")
 
     extension = ".spec.pt"
     size_spec = get_size_by_ext(hps.data_dir, extension)
