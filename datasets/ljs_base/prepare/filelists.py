@@ -25,12 +25,15 @@ args = {
 
 task.connect(args)
 
+
+print("Dataset ID: ", args["dataset_id"])
 dataset = Dataset.get(dataset_id=args["dataset_id"])
 
 path = dataset.get_mutable_local_copy(
     target_folder="./sil-vits2",
     overwrite=True
 )
+print("Dataset Path: ", path)
 
 link_name = 'DUMMY1'
 target_path = path + "/wavs"

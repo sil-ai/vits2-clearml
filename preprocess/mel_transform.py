@@ -32,11 +32,13 @@ args = {
 task.connect(args)
 
 # Getting the dataset - data_dir
+print("Dataset ID: ", args["dataset_id"])
 dataset = Dataset.get(dataset_id=args["dataset_id"])
 path = dataset.get_mutable_local_copy(
     target_folder="./sil-vits2",
     overwrite=True
 )
+print("Dataset Path: ", path)
 
 
 def parse_args():

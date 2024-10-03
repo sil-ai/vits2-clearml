@@ -78,11 +78,13 @@ def get_clearml_paths():
     vits_path = '/'.join(curr_dir)
 
     # Getting the dataset - data_dir
+    print("Dataset ID: ", args["dataset_id"])
     dataset = Dataset.get(dataset_id=args["dataset_id"])
     path = dataset.get_mutable_local_copy(
         target_folder="./sil-vits2",
         overwrite=True
     )
+    print("Dataset Path: ", path)
     link_name = 'DUMMY1'
     target_path = path + "/wavs"
     if not os.path.islink(link_name):
