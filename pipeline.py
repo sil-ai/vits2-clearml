@@ -24,6 +24,7 @@ pipe = PipelineController(
      project='Vits2 Project',
      version='0.0.2',
      add_pipeline_tags=False,
+     packages="./requirements.txt",
 )
 
 
