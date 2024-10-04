@@ -23,5 +23,4 @@ pytorch_lightning
 
 urllib3
 boto3==1.14.0
-
-dotenv-python
+python-dotenv
