@@ -24,3 +24,4 @@ pytorch_lightning
 urllib3
 boto3==1.14.0
 python-dotenv
+inflect>=5.0.0,<7.0.0
