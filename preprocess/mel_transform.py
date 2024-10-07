@@ -23,6 +23,9 @@ task = Task.init(
     task_type=Task.TaskTypes.data_processing
 )
 
+task.set_base_docker("alejandroquinterosil/clearml-image:v11")
+task.add_requirements("../requirements.txt")
+
 task.execute_remotely(queue_name='jobs_urgent', exit_process=True)
 
 args = {
