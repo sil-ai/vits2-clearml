@@ -1,3 +1,4 @@
+tb-nightly
 torch==2.3.0
 torchtext==0.18.0
 torchaudio==2.3.0
@@ -11,7 +12,7 @@ numpy
 numba
 matplotlib
 
-tensorboard==2.10.1
+tensorboard
 tensorboardX
 
 clearml
