@@ -11,7 +11,7 @@ numpy
 numba
 matplotlib
 
-tensorboard
+tensorboard==2.10.1
 tensorboardX
 
 clearml
@@ -22,5 +22,5 @@ ipykernel
 pytorch_lightning
 
 urllib3
-boto3==1.14.0
+boto3
 python-dotenv
