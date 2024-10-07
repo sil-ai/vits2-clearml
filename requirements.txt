@@ -23,5 +23,5 @@ ipykernel
 pytorch_lightning
 
 urllib3
-boto3==1.35.34
+boto3==1.16.11
 python-dotenv
