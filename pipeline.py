@@ -59,4 +59,4 @@ pipe.add_step(
 )
 
 
-pipe.start()
+pipe.start_locally()
