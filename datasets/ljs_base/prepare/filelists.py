@@ -77,7 +77,7 @@ data = pd.read_csv(
     converters={"file": lambda x: f"{symlink}/{x.strip()}.wav", "text": str.strip, "normalized_text": str.strip},
 )
 data.head()
-task.register_artifact("metadata_copy.csv", f"{dir_data}/metadata_copy.csv")
+task.register_artifact(name="data" , artifact=data)
 
 
 # Get index of tokenize_text

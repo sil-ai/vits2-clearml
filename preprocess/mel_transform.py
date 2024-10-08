@@ -54,7 +54,7 @@ print("Dataset Path: ", path)
 
 def set_up_media_logging():
     logger = Logger.current_logger()
-    logger.set_default_upload_destination(url="s3://sil-vits2/audio-reporting/{task.id}")
+    logger.set_default_upload_destination(uri=f"s3://sil-vits2/audio-reporting/{task.id}")
     return logger
 
 def parse_args():
@@ -188,7 +188,6 @@ if __name__ == "__main__":
     new_dataset = Dataset.create(
         dataset_project="Vits2 - Dev",
         dataset_name="LJSpeech-1.1 Transformed",
-        parent_datasets=[path]
     )
 
     # Add the transformed files
