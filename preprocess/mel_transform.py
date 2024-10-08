@@ -20,7 +20,8 @@ logging.basicConfig(stream=sys.stdout, level=logging.INFO, format=log_format, da
 task = Task.init(
     project_name='Vits2 Project',
     task_name='Preprocess Vits2 - Meltransform',
-    task_type=Task.TaskTypes.data_processing
+    task_type=Task.TaskTypes.data_processing,
+    auto_connect_frameworks={"pytorch": False}
 )
 
 aws_region = os.getenv('AWS_REGION')
@@ -53,7 +54,7 @@ print("Dataset Path: ", path)
 
 def set_up_media_logging():
     logger = Logger.current_logger()
-    logger.set_default_upload_destination("s3://sil-vits2/audio-reporting/{task.id}")
+    logger.set_default_upload_destination(url="s3://sil-vits2/audio-reporting/{task.id}")
     return logger
 
 def parse_args():

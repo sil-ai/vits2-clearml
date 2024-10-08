@@ -14,13 +14,26 @@ sys.path.append(utils_path)
 task = Task.init(
     project_name='Vits2 Project',
     task_name='Preprocess Vits2 - Filelists',
-    task_type=Task.TaskTypes.data_processing
+    task_type=Task.TaskTypes.data_processing,
+    auto_connect_frameworks={"pytorch": False}
 )
+
+aws_region = os.getenv('AWS_REGION')
+aws_access_key_id = os.getenv('AWS_ACCESS_KEY_ID')
+aws_secret_access_key = os.getenv('AWS_SECRET_ACCESS_KEY')
+task.set_base_docker(
+                    docker_image="alejandroquinterosil/clearml-image:v12",
+                    docker_arguments=[
+                        f"--env AWS_REGION={aws_region}",
+                        f"--env AWS_ACCESS_KEY_ID={aws_access_key_id}",
+                        f"--env AWS_SECRET_ACCESS_KEY={aws_secret_access_key}"])
+
+task.add_requirements("../../../requirements.txt")
 
 task.execute_remotely(queue_name='jobs_urgent', exit_process=True)
 
 args = {
-    'dataset_id': '6ec7f9f4265049039400b65a889199a4'
+    'dataset_id': 'f78954822fff4f92ab1ebb861b957104'
 }
 
 task.connect(args)
@@ -64,6 +77,7 @@ data = pd.read_csv(
     converters={"file": lambda x: f"{symlink}/{x.strip()}.wav", "text": str.strip, "normalized_text": str.strip},
 )
 data.head()
+task.register_artifact("metadata_copy.csv", f"{dir_data}/metadata_copy.csv")
 
 
 # Get index of tokenize_text
@@ -163,6 +177,8 @@ data_test = data.iloc[n_val: n_val + n_test]
 data_train.to_csv(vits_path+"/datasets/ljs_base/filelists/train.txt", sep="|", index=False, header=False)
 data_val.to_csv(vits_path+"/datasets/ljs_base/filelists/val.txt", sep="|", index=False, header=False)
 data_test.to_csv(vits_path+"/datasets/ljs_base/filelists/test.txt", sep="|", index=False, header=False)
+
+
 
 
 # Create a new dataset version and upload the transformed files

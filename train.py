@@ -41,11 +41,11 @@ task_clearml.set_base_docker(
 
 task_clearml.execute_remotely(queue_name='jobs_urgent', exit_process=True)
 args = {
-    'dataset_id': 'TO_BE_OVERWRITTEN'
+    'dataset_id': 'f78954822fff4f92ab1ebb861b957104'
 }
 task_clearml.connect(args)
 
-logger = task.get_logger()
+logger = task_clearml.get_logger()
 
 def log_loss_metrics(losses):
     for loss_type, loss_value in losses.items():
