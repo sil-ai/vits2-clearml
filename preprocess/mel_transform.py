@@ -159,7 +159,7 @@ if __name__ == "__main__":
     try:
         # Report the first file of the dataset
         first_file_path = path + "/wavs/LJ001-0001.wav"
-        logger.report_media("First File", first_file_path, iteration=0)
+        logger.report_media(title="First File", local_path=first_file_path, series="wav", iteration=0)
     except Exception as e:
         print(f"Failed to report media: {e}")
 
@@ -171,8 +171,8 @@ if __name__ == "__main__":
     try:
         # Report the first file of the dataset after processing
         first_file_path_spec = path + "/wavs/LJ001-0001.spec.pt"
-        logger.report_media("First File After Processing(Spec)", first_file_path_spec, iteration=0)
-        logger.report_media("First File After Processing(Wav)", first_file_path, iteration=0)
+        logger.report_media(title="First File After Processing(Spec)", local_path=first_file_path_spec, iteration=0)
+        logger.report_media(title="First File After Processing(Wav)", local_path=first_file_path, series="wav", iteration=1)
     except Exception as e:
         print(f"Failed to report media: {e}")
 

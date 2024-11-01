@@ -11,6 +11,7 @@ utils_path = vits_path + '/utils'
 sys.path.append(vits_path)
 sys.path.append(utils_path)
 
+Task.add_requirements("requirements.txt")
 task = Task.init(
     project_name='Vits2 Project',
     task_name='Preprocess Vits2 - Filelists',
@@ -28,19 +29,19 @@ task.set_base_docker(
                         f"--env AWS_ACCESS_KEY_ID={aws_access_key_id}",
                         f"--env AWS_SECRET_ACCESS_KEY={aws_secret_access_key}"])
 
-task.add_requirements("../../../requirements.txt")
+
 
 task.execute_remotely(queue_name='jobs_urgent', exit_process=True)
 
 args = {
-    'dataset_id': 'f78954822fff4f92ab1ebb861b957104'
+    'dataset_id': '9ac8d41cff184970872f9137cad5dbe1'
 }
 
 task.connect(args)
 
 
-print("Dataset ID: ", args["dataset_id"])
-dataset = Dataset.get(dataset_id=args["dataset_id"])
+print("Dataset ID: ", args["dataset_id"]['preview'])
+dataset = Dataset.get(dataset_id=args["dataset_id"]['preview'])
 
 path = dataset.get_mutable_local_copy(
     target_folder="./sil-vits2",
