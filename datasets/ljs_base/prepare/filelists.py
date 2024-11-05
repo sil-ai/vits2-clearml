@@ -1,8 +1,11 @@
 import os
-from clearml import Dataset
-import pandas as pd
 import sys
+import pandas as pd
+import json
+
+from clearml import Dataset
 from clearml import Task
+
 
 curr_dir = os.getcwd().split('/')
 print("Current Directory: ", curr_dir)
@@ -39,9 +42,10 @@ args = {
 
 task.connect(args)
 
+dataset_id = json.loads(args["dataset_id"])['preview']
 
-print("Dataset ID: ", args["dataset_id"]['preview'])
-dataset = Dataset.get(dataset_id=args["dataset_id"]['preview'])
+print("Dataset ID: ", dataset_id)
+dataset = Dataset.get(dataset_id=dataset_id)
 
 path = dataset.get_mutable_local_copy(
     target_folder="./sil-vits2",
