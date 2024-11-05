@@ -42,10 +42,11 @@ args = {
 
 task.connect(args)
 
-contenido = args["dataset_id"]
-contenido = contenido.replace("'", '"')
+content = args["dataset_id"]
+content = content.replace("'", '"')
 
-dataset_id = json.loads(contenido)['preview']
+print(content)
+dataset_id = json.loads(content)['preview']
 
 print("Dataset ID: ", dataset_id)
 dataset = Dataset.get(dataset_id=dataset_id)
