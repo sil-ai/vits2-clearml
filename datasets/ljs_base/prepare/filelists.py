@@ -192,7 +192,7 @@ data_test.to_csv(vits_path+"/datasets/ljs_base/filelists/test.txt", sep="|", ind
 
 
 
-
+print('##############AQUI##################')
 # Create a new dataset version and upload the transformed files
 new_dataset = Dataset.create(
     dataset_project="Vits2 - Dev",
