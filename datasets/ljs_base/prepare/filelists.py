@@ -2,6 +2,7 @@ import os
 import sys
 import pandas as pd
 import json
+import re
 
 from clearml import Dataset
 from clearml import Task
@@ -43,10 +44,12 @@ args = {
 task.connect(args)
 
 content = args["dataset_id"]
-content = content.replace("'", '"')
+# content = content.replace("'", '"')
+match = re.search(r"'preview':\s*'(.*?)'", content)
 
-print(content)
-dataset_id = json.loads(content)['preview']
+print(match)
+
+dataset_id = match.group(1)
 
 print("Dataset ID: ", dataset_id)
 dataset = Dataset.get(dataset_id=dataset_id)
