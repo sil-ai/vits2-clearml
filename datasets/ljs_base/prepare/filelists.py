@@ -42,6 +42,9 @@ args = {
 
 task.connect(args)
 
+print(type(args["dataset_id"]))
+print("Dataset ID: ", args["dataset_id"])
+
 dataset_id = json.loads(args["dataset_id"])['preview']
 
 print("Dataset ID: ", dataset_id)
