@@ -47,9 +47,10 @@ content = args["dataset_id"]
 # content = content.replace("'", '"')
 match = re.search(r"'preview':\s*'(.*?)'", content)
 
-print(match)
 
 dataset_id = match.group(1)
+
+print(type(dataset_id))
 
 print("Dataset ID: ", dataset_id)
 dataset = Dataset.get(dataset_id=dataset_id)
@@ -196,8 +197,8 @@ print('##############AQUI##################')
 # Create a new dataset version and upload the transformed files
 new_dataset = Dataset.create(
     dataset_project="Vits2 - Dev",
-    dataset_name="LJSpeech-1.1 Transformed Filelists",
-    parent_datasets=[path]
+    dataset_name="LJSpeech-1.1 Transformed Filelists"
+    #parent_datasets=[path]
 )
 
 # Add the transformed files
